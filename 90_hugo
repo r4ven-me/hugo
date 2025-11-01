@@ -1,0 +1,1 @@
+ivan ALL=(root) NOPASSWD: /opt/hugo/deploy.sh

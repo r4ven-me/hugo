@@ -1,0 +1,13 @@
+[Unit]
+Description=Hugo service
+Requires=docker.service
+After=docker.service
+
+[Service]
+Restart=on-failure
+RestartSec=5
+ExecStart=/usr/bin/docker compose -f /opt/hugo/docker-compose.yml up
+ExecStop=/usr/bin/docker compose -f /opt/hugo/docker-compose.yml down
+
+[Install]
+WantedBy=multi-user.target

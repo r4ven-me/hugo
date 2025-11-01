@@ -1,0 +1,52 @@
+---
+
+services:
+
+  angie:
+    #image: docker.angie.software/angie:latest
+    image: docker.angie.software/angie:1.10.2-alpine
+    container_name: angie
+    restart: on-failure
+    stop_grace_period: 1m
+    deploy: &default_deploy
+      resources:
+        limits:
+          cpus: '0.70'
+          memory: 512M
+        reservations:
+          cpus: '0.2'
+          memory: 256M
+    logging: &default_logging
+      driver: json-file
+      options:
+        max-size: "50m"
+        max-file: "5"
+    hostname: angie
+    environment:
+      - TZ=Europe/Moscow
+    #command: ["angie", "-g", "daemon off;"]
+    volumes:
+      - ./angie_data/angie.conf:/etc/angie/angie.conf:ro
+      - ./angie_data/conf.d/:/etc/angie/conf.d/:ro
+      - ./angie_data/certs/:/var/lib/angie/acme/
+      - ./hugo_data/hugo.r4ven.me/public/:/usr/share/angie/html/:ro
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+
+  hugo:
+    #image: docker.io/hugomods/hugo
+    image: hugomods/hugo:debian-0.151.0
+    container_name: hugo
+    restart: on-failure
+    stop_grace_period: 1m
+    deploy: *default_deploy
+    logging: *default_logging
+    hostname: hugo
+    environment:
+      - TZ=Europe/Moscow
+    working_dir: /src/hugo.r4ven.me
+    volumes:
+      - ./hugo_data/:/src/
+    command: ["hugo", "--minify", "--gc"]

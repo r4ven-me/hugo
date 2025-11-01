@@ -1,0 +1,1 @@
+command="sudo /opt/hugo/deploy.sh",no-port-forwarding,no-X11-forwarding,no-agent-forwarding,no-pty ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGvDu1omD1WwG1K68/mkvnBw/d4xRpREHDH4ytMDOl20
